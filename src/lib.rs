@@ -10,6 +10,8 @@
 mod socket_addrs;
 mod manually_poll;
 mod dirty;
+mod ordered;
+mod increment;
 mod vector;
 
 
@@ -50,15 +52,20 @@ pub mod prelude {
     pub use crate::socket_addrs::SocketAddrs;
     pub use crate::manually_poll::ManuallyPoll;
     pub use crate::dirty::Dirty;
+    pub use crate::ordered::Ordered;
+    pub use crate::increment::Increment;
     pub use crate::vector::*;
 
     pub use core::array;
     pub use core::cell::LazyCell;
     pub use core::fmt::Debug;
+    pub use core::iter;
     pub use core::marker::PhantomData;
     pub use core::mem;
     pub use core::net::{ AddrParseError, SocketAddr };
+    pub use core::num::NonZeroU8;
     pub use core::ops::{ Deref, DerefMut };
+    pub use core::slice;
     pub use core::str::FromStr;
     pub use core::sync::atomic::{
         AtomicBool,
@@ -67,7 +74,11 @@ pub mod prelude {
     pub use core::task::Poll;
     pub use core::time::Duration;
     pub use std::borrow::Cow;
-    pub use std::collections::VecDeque;
+    pub use std::collections::{
+        BTreeMap,
+        BTreeSet,
+        VecDeque
+    };
     pub use std::io;
     pub use std::path::{ Path, PathBuf };
     pub use std::process;
