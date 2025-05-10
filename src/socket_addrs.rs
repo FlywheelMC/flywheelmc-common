@@ -1,11 +1,10 @@
-use core::net::{
-    AddrParseError,
-    SocketAddr
-};
+use core::net::SocketAddr;
 use core::ops::Deref;
 use core::str::FromStr;
 use std::io;
 use std::net::ToSocketAddrs;
+use tokio::net;
+use futures::{ executor, future };
 
 
 #[derive(Debug, Clone)]
@@ -32,11 +31,19 @@ impl Deref for SocketAddrs {
 }
 
 impl FromStr for SocketAddrs {
-    type Err = AddrParseError;
-    fn from_str(s : &str) -> Result<Self, Self::Err> {
-        s.split(",")
-            .map(|r| SocketAddr::from_str(r))
-            .collect::<Result<Vec<_>, _>>()
-            .map(SocketAddrs)
+    type Err = io::Error;
+    fn from_str(s : &str) -> io::Result<Self> {
+        executor::block_on(async {
+            Ok(SocketAddrs(future::join_all(
+                s.split(",")
+                    .map(|r| net::lookup_host(r))
+            ).await
+                .into_iter()
+                .collect::<io::Result<Vec<_>>>()?
+                .into_iter()
+                .flatten()
+                .collect::<Vec<_>>()
+            ))
+        })
     }
 }

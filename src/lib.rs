@@ -1,11 +1,19 @@
 #![feature(
-    impl_trait_in_assoc_type
+    impl_trait_in_assoc_type,
+    auto_traits,
+    negative_impls,
+    macro_metavar_expr,
+    const_precise_live_drops
 )]
 
 
 mod socket_addrs;
 mod manually_poll;
+mod dirty;
+mod vector;
 
+
+pub use voxidian_protocol;
 
 pub use uuid;
 pub use rand;
@@ -41,6 +49,8 @@ pub mod prelude {
 
     pub use crate::socket_addrs::SocketAddrs;
     pub use crate::manually_poll::ManuallyPoll;
+    pub use crate::dirty::Dirty;
+    pub use crate::vector::*;
 
     pub use core::array;
     pub use core::cell::LazyCell;
@@ -63,6 +73,8 @@ pub mod prelude {
     pub use std::process;
     pub use std::sync::Arc;
     pub use std::time::Instant;
+
+    pub use crate::voxidian_protocol as protocol;
 
     pub use crate::uuid::Uuid;
     pub use crate::rand;

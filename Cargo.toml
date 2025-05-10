@@ -17,6 +17,9 @@ edition      = "2024"
 rust-version = "1.87"
 
 
+[dependencies.voxidian-protocol]
+path = "../voxidian-protocol"
+
 [dependencies.uuid]
 version = "1.16"
 [dependencies.rand]
@@ -29,6 +32,9 @@ features = [ "derive" ]
 [dependencies.tokio]
 version  = "1.44"
 features = [ "full" ]
+[dependencies.futures]
+version  = "0.3"
+features = [ "executor" ]
 
 [dependencies.bevy_app]
 version = "0.16"
