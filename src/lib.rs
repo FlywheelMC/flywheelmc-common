@@ -61,7 +61,10 @@ pub mod prelude {
     pub use core::fmt::Debug;
     pub use core::iter;
     pub use core::marker::PhantomData;
-    pub use core::mem;
+    pub use core::mem::{
+        self,
+        ManuallyDrop
+    };
     pub use core::net::{ AddrParseError, SocketAddr };
     pub use core::num::NonZeroU8;
     pub use core::ops::{ Deref, DerefMut };
@@ -110,6 +113,25 @@ pub mod prelude {
         RwLockReadGuard,
         RwLockWriteGuard
     };
+    pub mod mpsc {
+        pub use crate::tokio::sync::mpsc::{
+            UnboundedSender,
+            UnboundedReceiver,
+            unbounded_channel,
+            error::TryRecvError
+        };
+    }
+    pub mod task {
+        #[inline(always)]
+        pub async fn sleep(dur : core::time::Duration) -> () {
+            crate::bevy::defer::AsyncWorld.sleep(dur).await;
+        }
+        #[inline(always)]
+        pub async fn yield_now() -> () {
+            crate::bevy::defer::AsyncWorld.yield_now().await;
+        }
+        pub use crate::tokio::time::timeout;
+    }
 
     pub use crate::bevy;
     pub use crate::bevy::prelude::*;
