@@ -17,6 +17,8 @@ edition      = "2024"
 rust-version = "1.87"
 
 
+[dependencies.flywheelmc-logging]
+path = "../flywheelmc-logging"
 [dependencies.voxidian-protocol]
 path = "../voxidian-protocol"
 
@@ -47,7 +49,6 @@ version = "0.16"
 version = "0.16"
 [dependencies.bevy_time]
 version = "0.16"
-
 
 
 [lints.rust]

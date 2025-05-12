@@ -1,3 +1,4 @@
+use core::fmt;
 use core::net::SocketAddr;
 use core::ops::Deref;
 use core::str::FromStr;
@@ -22,6 +23,16 @@ impl ToSocketAddrs for SocketAddrs {
     type Iter = impl Iterator<Item = SocketAddr>;
     fn to_socket_addrs(&self) -> io::Result<Self::Iter> {
         Ok(self.0.clone().into_iter())
+    }
+}
+
+impl fmt::Display for SocketAddrs {
+    fn fmt(&self, f : &mut fmt::Formatter<'_>) -> fmt::Result {
+        for (i, addr) in self.0.iter().enumerate() {
+            if (i > 0) { write!(f, ", ")?; }
+            write!(f, "{}", addr)?;
+        }
+        Ok(())
     }
 }
 

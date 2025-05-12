@@ -14,6 +14,17 @@ mod ordered;
 mod increment;
 mod vector;
 
+pub fn handle_err<T, E : core::fmt::Display>(r : Result<T, E>) -> Result<T, ()> {
+    match (r) {
+        Ok(t) => Ok(t),
+        Err(err) => {
+            flywheelmc_logging::fatal!("{}", err);
+            bevy::defer::AsyncWorld.send_event(bevy::app::AppExit::error()).unwrap();
+            Err(())
+        },
+    }
+}
+
 
 pub use voxidian_protocol;
 
@@ -55,10 +66,22 @@ pub mod prelude {
     pub use crate::ordered::Ordered;
     pub use crate::increment::Increment;
     pub use crate::vector::*;
+    pub use crate::handle_err;
+
+    pub use flywheelmc_logging::{
+        fatal, fatal_once,
+        error, error_once,
+        warn,  warn_once,
+        pass,  pass_once,
+        info,  info_once,
+        debug, debug_once,
+        trace, trace_once,
+        once
+    };
 
     pub use core::array;
     pub use core::cell::LazyCell;
-    pub use core::fmt::Debug;
+    pub use core::fmt::{ self, Debug, Display };
     pub use core::iter;
     pub use core::marker::PhantomData;
     pub use core::mem::{
@@ -151,16 +174,5 @@ pub mod prelude {
 
     #[inline(always)]
     pub fn default<T : Default>() -> T { Default::default() }
-
-    pub fn handle_err<T, E : Debug>(r : Result<T, E>) -> Result<T, ()> {
-        match (r) {
-            Ok(t) => Ok(t),
-            Err(err) => {
-                println!("FATAL ERROR {:?}", err); // TODO: Better error message.
-                AsyncWorld.send_event(AppExit::error()).unwrap();
-                Err(())
-            },
-        }
-    }
 
 }
