@@ -26,6 +26,8 @@ path = "../voxidian-protocol"
 version = "1.16"
 [dependencies.rand]
 version = "0.9"
+[dependencies.disqualified]
+version = "1.0"
 
 [dependencies.clap]
 version  = "4.5"

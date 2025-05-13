@@ -115,7 +115,11 @@ pub mod prelude {
     pub use crate::voxidian_protocol as protocol;
 
     pub use crate::uuid::Uuid;
-    pub use crate::rand;
+    pub use crate::rand::{
+        random,
+        random_range
+    };
+    pub use disqualified::ShortName;
 
     pub use crate::clap;
     pub use crate::clap::Parser;
