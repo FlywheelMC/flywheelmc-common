@@ -26,6 +26,7 @@ pub fn handle_err<T, E : core::fmt::Display>(r : Result<T, E>) -> Result<T, ()> 
 }
 
 
+pub use flywheelmc_logging;
 pub use voxidian_protocol;
 
 pub use uuid;
@@ -68,7 +69,7 @@ pub mod prelude {
     pub use crate::vector::*;
     pub use crate::handle_err;
 
-    pub use flywheelmc_logging::{
+    pub use crate::flywheelmc_logging::{
         fatal, fatal_once,
         error, error_once,
         warn,  warn_once,
@@ -77,8 +78,10 @@ pub mod prelude {
         debug, debug_once,
         trace, trace_once,
         once,
-        ENABLE_COLOUR
+        LevelFilter,
+        ENABLE_COLOUR, LEVEL_FILTER
     };
+    pub use crate::voxidian_protocol as protocol;
 
     pub use core::array;
     pub use core::cell::LazyCell;
@@ -111,8 +114,6 @@ pub mod prelude {
     pub use std::process;
     pub use std::sync::Arc;
     pub use std::time::Instant;
-
-    pub use crate::voxidian_protocol as protocol;
 
     pub use crate::uuid::Uuid;
     pub use crate::rand::{
