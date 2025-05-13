@@ -76,7 +76,8 @@ pub mod prelude {
         info,  info_once,
         debug, debug_once,
         trace, trace_once,
-        once
+        once,
+        ENABLE_COLOUR
     };
 
     pub use core::array;
@@ -118,6 +119,24 @@ pub mod prelude {
 
     pub use crate::clap;
     pub use crate::clap::Parser;
+    pub use crate::clap::ColorChoice as ColourChoice;
+
+    pub trait CLIParse : Sized {
+        fn parse_check_colour() -> Self;
+    }
+    impl<P : clap::Parser> CLIParse for P {
+        fn parse_check_colour() -> Self {
+            let mut cmd = <Self as clap::CommandFactory>::command()
+                .color(if (*ENABLE_COLOUR) { ColourChoice::Always } else { ColourChoice::Never });
+            let mut matches = cmd.get_matches_mut();
+            let res = <Self as clap::FromArgMatches>::from_arg_matches_mut(&mut matches)
+                .map_err(|err| err.format(&mut cmd));
+            match (res) {
+                Ok(p) => p,
+                Err(err) => { err.exit(); }
+            }
+        }
+    }
 
     pub use crate::tokio;
     pub use crate::tokio::io::AsyncWriteExt;

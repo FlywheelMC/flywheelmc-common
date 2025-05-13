@@ -29,7 +29,7 @@ impl ToSocketAddrs for SocketAddrs {
 impl fmt::Display for SocketAddrs {
     fn fmt(&self, f : &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, addr) in self.0.iter().enumerate() {
-            if (i > 0) { write!(f, ", ")?; }
+            if (i > 0) { write!(f, ",")?; }
             write!(f, "{}", addr)?;
         }
         Ok(())
