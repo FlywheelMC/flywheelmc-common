@@ -78,8 +78,8 @@ pub mod prelude {
         debug, debug_once,
         trace, trace_once,
         once,
-        LevelFilter,
-        ENABLE_COLOUR, LEVEL_FILTER
+        LevelFilter, LogTarget, SingleLogTarget,
+        ENABLE_COLOUR, GLOBAL_FILTER, LOG_TARGETS
     };
     pub use crate::voxidian_protocol as protocol;
 
