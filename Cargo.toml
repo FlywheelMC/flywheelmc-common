@@ -20,7 +20,8 @@ rust-version = "1.87"
 [dependencies.flywheelmc-logging]
 path = "../flywheelmc-logging"
 [dependencies.voxidian-protocol]
-path = "../voxidian-protocol"
+path     = "../voxidian-protocol"
+features = [ "text_xml" ]
 
 [dependencies.uuid]
 version = "1.16"
