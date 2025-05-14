@@ -110,6 +110,7 @@ pub mod prelude {
         VecDeque
     };
     pub use std::io;
+    pub use std::collections::HashMap;
     pub use std::path::{ Path, PathBuf };
     pub use std::process;
     pub use std::sync::Arc;
