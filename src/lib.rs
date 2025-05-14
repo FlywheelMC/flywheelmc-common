@@ -1,9 +1,10 @@
 #![feature(
-    impl_trait_in_assoc_type,
+    // Language
     auto_traits,
-    negative_impls,
+    decl_macro,
+    impl_trait_in_assoc_type,
     macro_metavar_expr,
-    const_precise_live_drops
+    negative_impls
 )]
 
 
@@ -13,6 +14,7 @@ mod dirty;
 mod ordered;
 mod increment;
 mod vector;
+mod variadic;
 
 pub fn handle_err<T, E : core::fmt::Display>(r : Result<T, E>) -> Result<T, ()> {
     match (r) {
@@ -67,6 +69,7 @@ pub mod prelude {
     pub use crate::ordered::Ordered;
     pub use crate::increment::Increment;
     pub use crate::vector::*;
+    pub use crate::variadic::variadic;
     pub use crate::handle_err;
 
     pub use crate::flywheelmc_logging::{
@@ -114,7 +117,7 @@ pub mod prelude {
     pub use std::path::{ Path, PathBuf };
     pub use std::process;
     pub use std::sync::Arc;
-    pub use std::time::Instant;
+    pub use std::time::{ Instant, SystemTime };
 
     pub use crate::uuid::Uuid;
     pub use crate::rand::{
