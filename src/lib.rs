@@ -105,6 +105,7 @@ pub mod prelude {
     pub use core::str::FromStr;
     pub use core::sync::atomic::{
         AtomicBool,
+        AtomicU64,
         Ordering as AtomicOrdering
     };
     pub use core::task::Poll;
@@ -115,11 +116,15 @@ pub mod prelude {
         BTreeSet,
         VecDeque
     };
-    pub use std::io;
     pub use std::collections::HashMap;
+    pub use std::fs;
+    pub use std::io;
     pub use std::path::{ Path, PathBuf };
     pub use std::process;
-    pub use std::sync::Arc;
+    pub use std::sync::{
+        Arc,
+        Mutex as SMutex
+    };
     pub use std::time::{ Instant, SystemTime };
 
     pub use crate::uuid::Uuid;
