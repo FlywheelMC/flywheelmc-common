@@ -18,7 +18,7 @@ impl<T> Ordered<T> {
 
 impl<T : PartialEq> Ordered<T> {
 
-    pub fn set(container : &mut Self, value : T, generation : u128) -> () {
+    pub fn set(container : &mut Self, value : T, generation : u128) {
         if (generation >= container.min_gen) {
             if (container.value != value) {
                 Self::mark_dirty(container);
@@ -28,7 +28,7 @@ impl<T : PartialEq> Ordered<T> {
         }
     }
 
-    pub fn set_nogen(container : &mut Self, value : T) -> () {
+    pub fn set_nogen(container : &mut Self, value : T) {
         if (container.value != value) {
             Self::mark_dirty(container);
         }
@@ -39,13 +39,13 @@ impl<T : PartialEq> Ordered<T> {
 
 impl<T> Ordered<T> {
 
-    pub fn set_dirty(container : &mut Self, value : T) -> () {
+    pub fn set_dirty(container : &mut Self, value : T) {
         Self::set_silent(container, value);
         Self::mark_dirty(container);
     }
 
     #[inline]
-    pub fn set_silent(container : &mut Self, value : T) -> () {
+    pub fn set_silent(container : &mut Self, value : T) {
         container.value = value;
     }
 
@@ -56,7 +56,7 @@ impl<T> Ordered<T> {
     /// Returns an immutable reference to the contained
     ///  value.
     #[inline]
-    pub fn get_ref<'l>(container : &'l mut Self) -> &'l T {
+    pub fn get_ref(container : &mut Self) -> &T {
         &container.value
     }
 
@@ -65,17 +65,17 @@ impl<T> Ordered<T> {
 impl<T> Ordered<T> {
 
     #[inline]
-    pub fn mark_dirty(container : &mut Self) -> () {
+    pub fn mark_dirty(container : &mut Self) {
         container.dirty = true;
     }
 
     #[inline]
-    pub fn mark_clean(container : &mut Self) -> () {
+    pub fn mark_clean(container : &mut Self) {
         container.dirty = false;
     }
 
     #[inline]
-    pub fn mark(container : &mut Self, dirty : bool) -> () {
+    pub fn mark(container : &mut Self, dirty : bool) {
         container.dirty = dirty;
     }
 

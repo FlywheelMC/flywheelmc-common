@@ -30,7 +30,7 @@ impl<T : PartialEq> Dirty<T> {
     /// For a method which does not check equality and
     ///  unconditionally marks the `Dirty` as dirty, see
     ///  [`Dirty::set_dirty`].
-    pub fn set(container : &mut Self, value : T) -> () {
+    pub fn set(container : &mut Self, value : T) {
         if (container.value != value) {
             Self::mark_dirty(container);
         }
@@ -47,7 +47,7 @@ impl<T> Dirty<T> {
     /// This does not check if the old and new values are
     ///  equivalent. For a method which checks equality,
     ///  see [`Dirty::set`].
-    pub fn set_dirty(container : &mut Self, value : T) -> () {
+    pub fn set_dirty(container : &mut Self, value : T) {
         Self::set_silent(container, value);
         Self::mark_dirty(container);
     }
@@ -58,7 +58,7 @@ impl<T> Dirty<T> {
     /// If the Dirty was already marked dirty,
     ///  it will stay marked dirty.
     #[inline]
-    pub fn set_silent(container : &mut Self, value : T) -> () {
+    pub fn set_silent(container : &mut Self, value : T) {
         container.value = value;
     }
 
@@ -69,7 +69,7 @@ impl<T> Dirty<T> {
     /// Returns an immutable reference to the contained
     ///  value.
     #[inline]
-    pub fn get_ref<'l>(container : &'l mut Self) -> &'l T {
+    pub fn get_ref(container : &mut Self) -> &T {
         &container.value
     }
 
@@ -91,21 +91,21 @@ impl<T> Dirty<T> {
     /// Marks the `Dirty` as dirty without changing the
     ///  contained value.
     #[inline]
-    pub fn mark_dirty(container : &mut Self) -> () {
+    pub fn mark_dirty(container : &mut Self) {
         container.dirty = true;
     }
 
     // Unmarks the `Dirty` as dirty without changing the
     //  contained value.
     #[inline]
-    pub fn mark_clean(container : &mut Self) -> () {
+    pub fn mark_clean(container : &mut Self) {
         container.dirty = false;
     }
 
     // Sets whether the `Dirty` is marked as dirty
     //  without changing the contained value.
     #[inline]
-    pub fn mark(container : &mut Self, dirty : bool) -> () {
+    pub fn mark(container : &mut Self, dirty : bool) {
         container.dirty = dirty;
     }
 
@@ -158,7 +158,7 @@ impl<'l, T : Clone + PartialEq> Deref for DirtyMut<'l, T> {
 impl<'l, T : Clone + PartialEq> DerefMut for DirtyMut<'l, T> {
 
     fn deref_mut(&mut self) -> &mut Self::Target {
-        if let None = self.original_value {
+        if (self.original_value.is_none()) {
             self.original_value = Some(self.container.value.clone());
         }
         &mut self.container.value

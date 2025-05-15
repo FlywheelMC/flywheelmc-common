@@ -16,13 +16,13 @@ mod increment;
 mod vector;
 mod variadic;
 
-pub fn handle_err<T, E : core::fmt::Display>(r : Result<T, E>) -> Result<T, ()> {
+pub fn handle_err<T, E : core::fmt::Display>(r : Result<T, E>) -> Result<T, E> {
     match (r) {
         Ok(t) => Ok(t),
         Err(err) => {
             flywheelmc_logging::fatal!("{}", err);
             bevy::defer::AsyncWorld.send_event(bevy::app::AppExit::error()).unwrap();
-            Err(())
+            Err(err)
         },
     }
 }
@@ -37,6 +37,7 @@ pub use rand;
 pub use clap;
 
 pub use tokio;
+pub use futures;
 
 pub mod bevy {
     pub use bevy_app as app;
@@ -85,6 +86,8 @@ pub mod prelude {
         ENABLE_COLOUR, GLOBAL_FILTER, LOG_TARGETS
     };
     pub use crate::voxidian_protocol as protocol;
+
+    pub type PlotId = u64;
 
     pub use core::array;
     pub use core::cell::LazyCell;
@@ -182,6 +185,7 @@ pub mod prelude {
             crate::bevy::defer::AsyncWorld.yield_now().await;
         }
         pub use crate::tokio::time::timeout;
+        pub use crate::futures::executor::block_on;
     }
 
     pub use crate::bevy;

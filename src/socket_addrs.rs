@@ -30,7 +30,7 @@ impl fmt::Display for SocketAddrs {
     fn fmt(&self, f : &mut fmt::Formatter<'_>) -> fmt::Result {
         for (i, addr) in self.0.iter().enumerate() {
             if (i > 0) { write!(f, ",")?; }
-            write!(f, "{}", addr)?;
+            write!(f, "{addr}")?;
         }
         Ok(())
     }
@@ -47,7 +47,7 @@ impl FromStr for SocketAddrs {
         executor::block_on(async {
             Ok(SocketAddrs(future::join_all(
                 s.split(",")
-                    .map(|r| net::lookup_host(r))
+                    .map(net::lookup_host)
             ).await
                 .into_iter()
                 .collect::<io::Result<Vec<_>>>()?
