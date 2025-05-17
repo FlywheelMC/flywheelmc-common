@@ -110,6 +110,7 @@ pub mod prelude {
     pub use core::sync::atomic::{
         AtomicBool,
         AtomicU64,
+        AtomicUsize,
         Ordering as AtomicOrdering
     };
     pub use core::task::Poll;
