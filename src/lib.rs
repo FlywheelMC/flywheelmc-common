@@ -96,13 +96,15 @@ pub mod prelude {
     pub use core::marker::PhantomData;
     pub use core::mem::{
         self,
-        ManuallyDrop
+        ManuallyDrop,
+        MaybeUninit
     };
     pub use core::net::{ AddrParseError, SocketAddr };
     pub use core::num::NonZeroU8;
     pub use core::ops::{ Deref, DerefMut };
+    pub use core::pin::Pin;
     pub use core::slice;
-    pub use core::str::FromStr;
+    pub use core::str::{ self, FromStr };
     pub use core::sync::atomic::{
         AtomicBool,
         AtomicU64,
@@ -123,7 +125,8 @@ pub mod prelude {
     pub use std::process;
     pub use std::sync::{
         Arc,
-        Mutex as SMutex
+        Mutex as SMutex,
+        LazyLock
     };
     pub use std::time::{ Instant, SystemTime };
 
@@ -188,6 +191,18 @@ pub mod prelude {
         #[inline(always)]
         pub async fn yield_now() -> () {
             crate::bevy::defer::AsyncWorld.yield_now().await;
+        }
+        pub async fn poll_and_yield<T, F : Future<Output = T>>(fut : F) -> T {
+            let     waker = core::task::Waker::noop();
+            let mut ctx   = core::task::Context::from_waker(&waker);
+            let mut fut   = core::pin::pin!(fut);
+            loop {
+                match (fut.as_mut().poll(&mut ctx)) {
+                    core::task::Poll::Pending => { },
+                    core::task::Poll::Ready(out) => { return out; }
+                }
+                yield_now().await;
+            }
         }
         pub use crate::tokio::time::timeout;
         pub use crate::futures::executor::block_on;
