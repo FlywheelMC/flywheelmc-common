@@ -202,7 +202,7 @@ pub mod prelude {
         }
         pub async fn poll_and_yield<T, F : Future<Output = T>>(fut : F) -> T {
             let     waker = core::task::Waker::noop();
-            let mut ctx   = core::task::Context::from_waker(&waker);
+            let mut ctx   = core::task::Context::from_waker(waker);
             let mut fut   = core::pin::pin!(fut);
             loop {
                 match (fut.as_mut().poll(&mut ctx)) {
