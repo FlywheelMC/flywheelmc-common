@@ -185,12 +185,17 @@ pub mod prelude {
     };
     pub mod mpsc {
         pub use crate::tokio::sync::mpsc::{
-            Sender,
-            Receiver,
-            channel,
             UnboundedSender,
             UnboundedReceiver,
             unbounded_channel,
+            error::TryRecvError
+        };
+    }
+    pub mod oneshot {
+        pub use crate::tokio::sync::oneshot::{
+            Sender,
+            Receiver,
+            channel,
             error::TryRecvError
         };
     }
