@@ -35,6 +35,7 @@ pub use uuid;
 pub use rand;
 pub use disqualified;
 pub use chrono;
+pub use bimap;
 
 pub use clap;
 
@@ -53,6 +54,7 @@ pub mod bevy {
             AsyncWorld,
             AsyncCommandsExtension,
             AsyncEntityCommandsExtension,
+            AsyncAccess,
             Task
         };
         pub use bevy_ecs::{ self,
@@ -141,6 +143,7 @@ pub mod prelude {
     };
     pub use disqualified::ShortName;
     pub use chrono::Utc;
+    pub use bimap::BiBTreeMap;
 
     pub use crate::clap;
     pub use crate::clap::Parser;
