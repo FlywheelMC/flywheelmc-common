@@ -200,7 +200,10 @@ pub mod prelude {
         pub async fn yield_now() -> () {
             crate::bevy::defer::AsyncWorld.yield_now().await;
         }
-        pub async fn poll_and_yield<T, F : Future<Output = T>>(fut : F) -> T {
+        pub async fn poll_and_yield<T, Fut>(fut : Fut) -> T
+        where
+            Fut : Future<Output = T>
+        {
             let     waker = core::task::Waker::noop();
             let mut ctx   = core::task::Context::from_waker(waker);
             let mut fut   = core::pin::pin!(fut);
