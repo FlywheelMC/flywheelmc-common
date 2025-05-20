@@ -57,9 +57,18 @@ pub mod bevy {
             AsyncAccess,
             Task
         };
-        pub use bevy_ecs::{ self,
-            prelude::*
-        };
+        pub use bevy_ecs::{ self, prelude::{
+            Commands,
+            Component,
+            Entity,
+            Event,
+            EventReader,
+            EventWriter,
+            Query,
+            Res,
+            Resource,
+            With
+        } };
         pub use bevy_time::{ self, prelude::* };
     }
 }
