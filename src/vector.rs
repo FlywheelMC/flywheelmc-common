@@ -25,7 +25,7 @@ macro_rules! vec {(
     $vis:vis $ident:ident { $( $field:ident ),* $(,)? }
 ) => {
 
-    #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Hash, Debug)]
     $vis struct $ident<T> {
         $( $vis $field : T , )*
     }

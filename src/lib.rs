@@ -39,7 +39,7 @@ pub use bimap;
 
 pub use clap;
 
-pub use tokio;
+pub use smol;
 pub use futures;
 
 pub mod bevy {
@@ -166,39 +166,23 @@ pub mod prelude {
         }
     }
 
-    pub use crate::tokio;
-    pub use crate::tokio::io::AsyncWriteExt;
-    pub use crate::tokio::net::{
-        TcpListener,
-        TcpStream,
-        tcp::{
-            OwnedReadHalf,
-            OwnedWriteHalf
-        }
+    pub use crate::smol;
+    pub use crate::smol::io::{
+        AsyncWriteExt,
+        AsyncReadExt
     };
-    pub use crate::tokio::sync::{
+    pub use crate::smol::net::{
+        TcpListener,
+        TcpStream
+    };
+    pub use crate::smol::lock::{
         Mutex,
         MutexGuard,
         RwLock,
         RwLockReadGuard,
         RwLockWriteGuard
     };
-    pub mod mpsc {
-        pub use crate::tokio::sync::mpsc::{
-            UnboundedSender,
-            UnboundedReceiver,
-            unbounded_channel,
-            error::TryRecvError
-        };
-    }
-    pub mod oneshot {
-        pub use crate::tokio::sync::oneshot::{
-            Sender,
-            Receiver,
-            channel,
-            error::TryRecvError
-        };
-    }
+    pub use crate::smol::channel;
     pub mod task {
         #[inline(always)]
         pub async fn sleep(dur : core::time::Duration) -> () {
@@ -223,7 +207,23 @@ pub mod prelude {
                 yield_now().await;
             }
         }
-        pub use crate::tokio::time::timeout;
+        pub async fn timeout<T, Fut>(dur : core::time::Duration, fut : Fut) -> Option<T>
+        where
+            Fut : Future<Output = T>
+        {
+            let     expires = std::time::Instant::now() + dur;
+            let     waker   = core::task::Waker::noop();
+            let mut ctx     = core::task::Context::from_waker(waker);
+            let mut fut     = core::pin::pin!(fut);
+            loop {
+                match (fut.as_mut().poll(&mut ctx)) {
+                    core::task::Poll::Pending => { },
+                    core::task::Poll::Ready(out) => { return Some(out); }
+                }
+                if (std::time::Instant::now() >= expires) { return None; }
+                yield_now().await;
+            }
+        }
         pub use crate::futures::executor::block_on;
     }
 

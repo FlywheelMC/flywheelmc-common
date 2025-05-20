@@ -38,9 +38,8 @@ version = "0.6"
 version  = "4.5"
 features = [ "derive" ]
 
-[dependencies.tokio]
-version  = "1.44"
-features = [ "full" ]
+[dependencies.smol]
+version = "2.0"
 [dependencies.futures]
 version  = "0.3"
 features = [ "executor" ]

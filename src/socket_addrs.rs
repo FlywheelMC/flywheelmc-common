@@ -4,7 +4,7 @@ use core::ops::Deref;
 use core::str::FromStr;
 use std::io;
 use std::net::ToSocketAddrs;
-use tokio::net;
+use smol::net;
 use futures::{ executor, future };
 
 
@@ -47,7 +47,7 @@ impl FromStr for SocketAddrs {
         executor::block_on(async {
             Ok(SocketAddrs(future::join_all(
                 s.split(",")
-                    .map(net::lookup_host)
+                    .map(net::resolve)
             ).await
                 .into_iter()
                 .collect::<io::Result<Vec<_>>>()?
