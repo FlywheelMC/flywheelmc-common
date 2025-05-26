@@ -146,13 +146,10 @@ pub mod prelude {
     pub use std::time::{ Instant, SystemTime };
 
     pub use crate::uuid::Uuid;
-    pub use crate::rand::{
-        random,
-        random_range
-    };
-    pub use disqualified::ShortName;
-    pub use chrono::Utc;
-    pub use bimap::BiBTreeMap;
+    pub use crate::rand::{ random, random_range };
+    pub use crate::disqualified::ShortName;
+    pub use crate::chrono::Utc;
+    pub use crate::bimap::BiBTreeMap;
 
     pub use crate::clap;
     pub use crate::clap::Parser;
